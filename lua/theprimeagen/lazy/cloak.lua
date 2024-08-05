@@ -1,3 +1,4 @@
+--cmd  :CloakEnable :CloakDisable :CloakToggle
 return {
     "laytan/cloak.nvim",
     config = function()

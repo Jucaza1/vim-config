@@ -66,3 +66,7 @@ autocmd('LspAttach', {
 vim.g.netrw_browse_split = 0
 vim.g.netrw_banner = 0
 vim.g.netrw_winsize = 25
+
+vim.opt.guicursor = {'i:ver25-blinkwait175-blinkoff150-blinkon175'}
+vim.opt.cursorline = true
+ColorMyPencils()
