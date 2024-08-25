@@ -1,4 +1,5 @@
 function ColorMyPencils(color)
+	-- color = color or "tokyonight"
 	color = color or "rose-pine-moon"
 	vim.cmd.colorscheme(color)
 
@@ -53,6 +54,7 @@ return {
     },
     {
         "folke/tokyonight.nvim",
+        name = "tokyonight",
         config = function()
             require("tokyonight").setup({
                 -- your configuration comes here
