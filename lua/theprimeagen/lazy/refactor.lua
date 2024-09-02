@@ -19,6 +19,7 @@ return {
                 c = true,
                 java = true,
             },
+            show_success_message = true,
         })
         -- load refactoring Telescope extension
         require("telescope").load_extension("refactoring")

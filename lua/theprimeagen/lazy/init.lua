@@ -6,5 +6,6 @@ return {
     },
 
     "eandrju/cellular-automaton.nvim",
+    'michaeljsmith/vim-indent-object'
 }
 

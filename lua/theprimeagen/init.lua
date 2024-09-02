@@ -69,4 +69,41 @@ vim.g.netrw_winsize = 25
 
 vim.opt.guicursor = {'i:ver25-blinkwait175-blinkoff150-blinkon175'}
 vim.opt.cursorline = true
+
+-- Case insensitive searching UNLESS /C or capital in search
+vim.o.ignorecase = true
+vim.o.smartcase = true
+
+-- Decrease update time
+vim.o.updatetime = 250
+vim.wo.signcolumn = 'yes'
+
+-- Set highlight on search
+vim.o.hlsearch = true
+vim.opt.autoindent = true
+vim.opt.smartindent = true
+
+-- Leave at 10 lines when scrolling
+vim.opt.scrolloff = 10
+
+-- 4 spaces instead of tabs
+vim.opt.shiftwidth = 4
+vim.opt.tabstop = 4
+
+-- Indent when wrap and disable wrap
+vim.opt.breakindent = true
+vim.opt.wrap = false
+
+-- Move through white spaces
+vim.opt.backspace = { "start", "eol", "indent" }
+-- vim.opt.path:append({ "**" })
+vim.opt.wildignore:append({ "*/node_modules/*" })
+
+-- Split right and below and keep cursor
+vim.opt.splitbelow = true
+vim.opt.splitright = true
+vim.opt.splitkeep = "cursor"
+--vim.cmd()
+-- vim.opt.clipboard = 'unnamedplus'
+-- vim.o.fillchars = "vert:|,horiz:━"
 ColorMyPencils()

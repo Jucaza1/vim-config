@@ -7,22 +7,22 @@ return {
         keys = {
             {
                 "<leader>xx",
-                "<cmd>Trouble diagnostics toggle<cr>",
+               "<cmd>Trouble diagnostics toggle<cr>",
                 desc = "Diagnostics (Trouble)",
             },
             {
-                "<leader>xX",
+                "<leader>tt",
                 "<cmd>Trouble diagnostics toggle filter.buf=0<cr>",
-                desc = "Buffer Diagnostics (Trouble)",
+              desc = "Buffer Diagnostics (Trouble)",
             },
             {
                 "<leader>cs",
-                "<cmd>Trouble symbols toggle focus=false<cr>",
+                "<cmd>Trouble symbols toggle focus=false win.size.width=0.3<cr>",
                 desc = "Symbols (Trouble)",
             },
             {
                 "<leader>cl",
-                "<cmd>Trouble lsp toggle focus=false win.position=right<cr>",
+                "<cmd>Trouble lsp toggle focus=false win.position=right win.size.width=0.3<cr>",
                 desc = "LSP Definitions / references / ... (Trouble)",
             },
             {
@@ -31,7 +31,7 @@ return {
                 desc = "Location List (Trouble)",
             },
             {
-                "<leader>xQ",
+                "<leader>xq",
                 "<cmd>Trouble qflist toggle<cr>",
                 desc = "Quickfix List (Trouble)",
             },
@@ -40,16 +40,16 @@ return {
             require("trouble").setup({
             })
 
-            vim.keymap.set("n", "<leader>tt", function()
-                require("trouble").toggle()
-            end)
+            -- vim.keymap.set("n", "<leader>tt", function()
+            --     require("trouble").toggle()
+            -- end)
 
             vim.keymap.set("n", "[t", function()
                 require("trouble").next({ skip_groups = true, jump = true });
             end)
 
             vim.keymap.set("n", "]t", function()
-                require("trouble").previous({ skip_groups = true, jump = true });
+                require("trouble").prev({ skip_groups = true, jump = true });
             end)
         end
     },

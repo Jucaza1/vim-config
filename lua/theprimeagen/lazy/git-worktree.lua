@@ -31,9 +31,13 @@ return {
                 print("Switched from " .. metadata.prev_path .. " to " .. metadata.path)
             end
             if op == Worktree.Operations.Create then
+                if nil ~= metadata.upstream then
                 print("Created worktree for branch " .. metadata.branch .. " at " .. metadata.path .. " | upstream = " .. metadata.upstream )
+                else
+                print("Created worktree for branch " .. metadata.branch .. " at " .. metadata.path)
+                end
             end
-            if op == Worktree.Operations.Switch then
+            if op == Worktree.Operations.Delete then
                 print("Deleted worktree from " .. metadata.path)
             end
         end)
