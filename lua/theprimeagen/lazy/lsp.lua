@@ -37,6 +37,7 @@ return {
                 "pyright",
                 "eslint",
                 "tsserver",
+                "zls",
             },
             handlers = {
                 function(server_name) -- default handler (optional)
@@ -92,10 +93,29 @@ return {
                     null_ls.register(null_ls.builtins.formatting.goimports)
                 end,
                 prettier = function(source_name, methods)
-                    null_ls.register(null_ls.builtins.formatting.prettier)
+                    -- null_ls.register(null_ls.builtins.formatting.prettier)
+                    null_ls.builtins.formatting.prettier.with({extra_args={"--no-semi"}})
+                    -- null_ls.builtins.formatting.prettier.with({
+                    --     filetypes = {
+                    --         "javascript",
+                    --         "typescript",
+                    --         "css",
+                    --         "scss",
+                    --         "html",
+                    --         "json",
+                    --         "yaml",
+                    --         "markdown",
+                    --         "graphql",
+                    --         "md",
+                    --         "txt",
+                    --     },
+                    --     only_local = "node_modules/.bin",
+                    -- })
                 end,
                 black = function(source_name, methods)
                     null_ls.register(null_ls.builtins.formatting.black)
+                    -- null_ls.register(null_ls.builtins.formatting.black.with({ extra_args = { "--skip-string-normalization", } }))
+                    --https://black.readthedocs.io/en/stable/usage_and_configuration/the_basics.html
                 end,
                 shfmt = function(source_name, methods)
                     -- custom logic
@@ -117,7 +137,7 @@ return {
                 ['<C-n>'] = cmp.mapping.select_next_item(cmp_select),
                 ['<Tab>'] = cmp.mapping.select_next_item(cmp_select),
                 ['<C-y>'] = cmp.mapping.confirm({ select = true }),
-                ['<CR>'] = cmp.mapping.confirm({ select = true }),
+                -- ['<CR>'] = cmp.mapping.confirm({ select = true }),
                 ['<C-e>'] = cmp.mapping.abort(),
                 ["<C-Space>"] = cmp.mapping.complete(),
             }),

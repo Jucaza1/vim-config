@@ -9,10 +9,11 @@ vim.keymap.set("n", "", '<CMD>nohlsearch<CR>')
 vim.keymap.set("n", "<leader>w", '<CMD>:update<CR>')
 vim.keymap.set("n", "<leader>qq", '<CMD>:q<CR>')
 vim.keymap.set("n", "<leader>Q", '<CMD>:qa<CR>')
-vim.keymap.set("n", "gx", ":!open <c-r><c-a><CR>")
+-- vim.keymap.set("n", "gx", ":!open <c-r><c-a><CR>")
+-- vim.keymap.set("v", "gx", "<CMD>!open '<,'><CR>")
 
-vim.keymap.set("n", "ss", ":split<Return>", opts)
-vim.keymap.set("n", "sv", ":vsplit<Return>", opts)
+vim.keymap.set("n", "sv", ":split<Return>", opts)
+vim.keymap.set("n", "ss", ":vsplit<Return>", opts)
 
 vim.keymap.set("n", "sh", "<C-w>h")
 vim.keymap.set("n", "sk", "<C-w>k")
@@ -35,10 +36,10 @@ vim.keymap.set("x", "<leader>p", [["_dP]])
 vim.keymap.set("n", "<leader>pp", [["*p]])
 
 -- next greatest remap ever : asbjornHaland
--- vim.keymap.set({ "n", "v" }, "<leader>y", [["+y]])
--- vim.keymap.set("n", "<leader>Y", [["+Y]])
-vim.keymap.set({ "n", "v" }, "<leader>y", [["*y]])
-vim.keymap.set("n", "<leader>Y", [["*Y]])
+vim.keymap.set({ "n", "v" }, "<leader>y", [["+y]])
+vim.keymap.set("n", "<leader>Y", [["+Y]])
+-- vim.keymap.set({ "n", "v" }, "<leader>y", [["*y]])
+-- vim.keymap.set("n", "<leader>Y", [["*Y]])
 
 vim.keymap.set({ "n", "v" }, "<leader>d", [["_d]])
 

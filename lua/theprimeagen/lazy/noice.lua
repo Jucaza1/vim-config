@@ -1,7 +1,7 @@
 return {
     "folke/noice.nvim",
     event = "VeryLazy",
-    enabled = false,
+    enabled = true,
     opts = {
         -- add any options here
     },
@@ -19,7 +19,7 @@ return {
         local Msg = require("noice.ui.msg")
         local opts_m = {
             cmdline = {
-                enabled = true,         -- enables the Noice cmdline UI
+                enabled = false,         -- enables the Noice cmdline UI
                 view = "cmdline_popup", -- view for rendering the cmdline. Change to `cmdline` to get a classic cmdline at the bottom
                 opts = {},              -- global options for the cmdline. See section on views
                 ---@type table<string, CmdlineFormat>
@@ -42,7 +42,7 @@ return {
             messages = {
                 -- NOTE: If you enable messages, then the cmdline is enabled automatically.
                 -- This is a current Neovim limitation.
-                enabled = true,              -- enables the Noice messages UI
+                enabled = false,              -- enables the Noice messages UI
                 view = "notify",             -- default view for messages
                 view_error = "notify",       -- view for errors
                 view_warn = "notify",        -- view for warnings
@@ -50,7 +50,7 @@ return {
                 view_search = "virtualtext", -- view for search count messages. Set to `false` to disable
             },
             popupmenu = {
-                enabled = true,  -- enables the Noice popupmenu UI
+                enabled = false,  -- enables the Noice popupmenu UI
                 ---@type 'nui'|'cmp'
                 backend = "nui", -- backend to use to show regular cmdline completions
                 ---@type NoicePopupmenuItemKind|false
@@ -122,7 +122,7 @@ return {
             },
             lsp = {
                 progress = {
-                    enabled = true,
+                    enabled = false,
                     -- Lsp Progress is formatted using the builtins for lsp_progress. See config.format.builtin
                     -- See the section on formatting for more details on how to customize.
                     --- @type NoiceFormat|string
@@ -148,7 +148,7 @@ return {
                     opts = {},      -- merged with defaults from documentation
                 },
                 signature = {
-                    enabled = true,
+                    enabled = false,
                     auto_open = {
                         enabled = true,
                         trigger = true, -- Automatically show signature help when typing a trigger character from the LSP
