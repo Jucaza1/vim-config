@@ -8,7 +8,7 @@ return {
             -- A list of parser names, or "all"
             ensure_installed = {
                 "vimdoc", "javascript", "typescript", "c", "lua", "rust",
-                "jsdoc", "bash", "go", "python", "zig"
+                "jsdoc", "bash", "go", "python", "zig", "java"
             },
 
             -- Install parsers synchronously (only applied to `ensure_installed`)
@@ -32,6 +32,15 @@ return {
                 -- Instead of true it can also be a list of languages
                 additional_vim_regex_highlighting = { "markdown" },
             },
+            incremental_selection = {
+                enable = true,
+                keymaps = {
+                    init_selection = "<C-space>",
+                    node_incremental = "<C-space>",
+                    scope_incremental = false,
+                    node_decremental = "<bs>",
+                },
+            },
             textobjects = {
                 select = {
                     enable = true,
@@ -49,6 +58,20 @@ return {
                         ["ic"] = { query = "@class.inner", desc = "Select inner part of a class region" },
                         -- You can also use captures from other query groups like `locals.scm`
                         ["as"] = { query = "@scope", query_group = "locals", desc = "Select language scope" },
+
+                        ["al"] = { query = "@loop.outer", desc = "Select outer part of a loop" },
+                        ["il"] = { query = "@loop.inner", desc = "Select inner part of a loop" },
+
+                        ["a="] = { query = "@assignment.outer", desc = "Select outer part of an assignment" },
+                        ["i="] = { query = "@assignment.inner", desc = "Select inner part of an assignment" },
+                        ["l="] = { query = "@assignment.lhs", desc = "Select left hand side of an assignment" },
+                        ["r="] = { query = "@assignment.rhs", desc = "Select right hand side of an assignment" },
+
+                        -- works for javascript/typescript files (custom capture I created in after/queries/ecma/textobjects.scm)
+                        ["a:"] = { query = "@property.outer", desc = "Select outer part of an object property" },
+                        ["i:"] = { query = "@property.inner", desc = "Select inner part of an object property" },
+                        ["l:"] = { query = "@property.lhs", desc = "Select left part of an object property" },
+                        ["r:"] = { query = "@property.rhs", desc = "Select right part of an object property" },
                     },
                     -- You can choose the select mode (default is charwise 'v')
                     --

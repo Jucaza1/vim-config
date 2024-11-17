@@ -14,6 +14,28 @@ end
     -- vim.api.nvim_set_hl(0, "StatusLineNC", { bg = '#592135', })
     -- vim.api.nvim_set_hl(0, "Pmenu", { bg = '#52054e', })
 end
+function Ruler()
+    -- Get the current state of 'cursorcolumn'
+    local current_value = vim.wo.cursorcolumn
+
+    -- Toggle it (true becomes false, false becomes true)
+    if current_value then
+        vim.wo.cursorcolumn = false
+        print("Cursor column highlight disabled")
+    else
+        vim.wo.cursorcolumn = true
+        print("Cursor column highlight enabled")
+    end
+end
+function ToggleWrap()
+  if vim.wo.wrap then
+    vim.wo.wrap = false
+    print("Wrap disabled")
+  else
+    vim.wo.wrap = true
+    print("Wrap enabled")
+  end
+end
 
 return {
 

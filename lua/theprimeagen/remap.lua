@@ -11,7 +11,9 @@ vim.keymap.set("n", "<leader>qq", '<CMD>:q<CR>')
 vim.keymap.set("n", "<leader>Q", '<CMD>:qa<CR>')
 -- vim.keymap.set("n", "gx", ":!open <c-r><c-a><CR>")
 -- vim.keymap.set("v", "gx", "<CMD>!open '<,'><CR>")
-
+-- Increment/decrement
+vim.keymap.set("n", "<C-s>", "<C-a>", { desc = "Increment numbers", noremap = true })
+-- vim.keymap.set("n", "-", "<C-x>", { desc = "Decrement numbers", noremap = true })
 vim.keymap.set("n", "sv", ":split<Return>", opts)
 vim.keymap.set("n", "ss", ":vsplit<Return>", opts)
 
@@ -74,8 +76,9 @@ vim.keymap.set(
 )
 
 vim.keymap.set("n", "<leader>vpp", "<cmd>e ~/dotfiles/nvim/.config/nvim/lua/theprimeagen/remap.lua<CR>");
+vim.keymap.set("n", "<leader>obs", "<cmd>e ~/vaults/personal/main.md<CR>");
 vim.keymap.set("n", "<leader>mr", "<cmd>CellularAutomaton make_it_rain<CR>");
 
-vim.keymap.set("n", "<leader><leader>", function()
-    vim.cmd("so")
-end)
+-- vim.keymap.set("n", "<leader><leader>", function()
+--     vim.cmd("so")
+-- end)

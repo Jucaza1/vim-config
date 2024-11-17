@@ -2,6 +2,7 @@ return {
     "neovim/nvim-lspconfig",
     dependencies = {
         "williamboman/mason.nvim",
+        "jay-babu/mason-nvim-dap.nvim",
         "williamboman/mason-lspconfig.nvim",
         "jay-babu/mason-null-ls.nvim",
         "nvimtools/none-ls.nvim",
@@ -27,6 +28,11 @@ return {
         null_ls.setup()
         require("fidget").setup({})
         require("mason").setup()
+        require("mason-nvim-dap").setup({
+            ensure_installed = {
+                "codelldb"
+            }
+        })
         require("mason-lspconfig").setup({
             ensure_installed = {
                 "lua_ls",
@@ -36,13 +42,29 @@ return {
                 "jsonls",
                 "pyright",
                 "eslint",
-                "tsserver",
+                "ts_ls",
                 "zls",
+                "jdtls",
             },
             handlers = {
                 function(server_name) -- default handler (optional)
                     require("lspconfig")[server_name].setup {
                         capabilities = capabilities
+                    }
+                end,
+                ["rust_analyzer"] = function()
+                    local lspconfig = require("lspconfig")
+                    lspconfig.rust_analyzer.setup {
+                        capabilities = capabilities,
+                        settings = {
+                            ['rust-analyzer'] = {
+                                cargo = { allFeatures = true },
+                                checkOnSave = { command = "clippy" },
+                                diagnostics = {
+                                    enable = true,
+                                }
+                            }
+                        }
                     }
                 end,
 
@@ -75,6 +97,32 @@ return {
                         }
                     }
                 end,
+                ["phpactor"] = function()
+                    local lspconfig = require("lspconfig")
+                    lspconfig.phpactor.setup({
+                        root_dir = function(fname)
+                            local root_files = { '.git', 'composer.json' }
+                            local util = require('lspconfig/util')
+
+                            return util.root_pattern(unpack(root_files))(fname) or
+                                util.path.dirname(fname) -- Fallback to the file directory
+                        end,
+                        capabilities = capabilities,
+                    })
+                end,
+                ["html"] = function()
+                    local lspconfig = require("lspconfig")
+                    lspconfig.html.setup {
+                        filetypes = { "html", "php" },
+                        capabilities = capabilities,
+                    }
+                end,
+                -- ["htmx"] = function()
+                --     local lspconfig = require("lspconfig")
+                --     lspconfig.htmx.setup {
+                --         capabilities = capabilities,
+                --     }
+                -- end,
             }
         })
         require("mason-null-ls").setup({
@@ -85,6 +133,8 @@ return {
                 'prettier',
                 'gopls',
                 'goimports',
+                'phpcsfixer',
+                'phpcbf'
             },
             handlers = {
                 function() end, -- disables automatic setup of all null-ls sources
@@ -94,7 +144,7 @@ return {
                 end,
                 prettier = function(source_name, methods)
                     -- null_ls.register(null_ls.builtins.formatting.prettier)
-                    null_ls.builtins.formatting.prettier.with({extra_args={"--no-semi"}})
+                    null_ls.builtins.formatting.prettier.with({ extra_args = { "--no-semi" } })
                     -- null_ls.builtins.formatting.prettier.with({
                     --     filetypes = {
                     --         "javascript",
@@ -121,6 +171,16 @@ return {
                     -- custom logic
                     require('mason-null-ls').default_setup(source_name, methods) -- to maintain default behavior
                 end,
+                phpcbf = function(source_name, methods)
+                    --     null_ls.register(null_ls.builtins.formatting.phpcbf)
+                    null_ls.register(null_ls.builtins.formatting.phpcbf.with({
+                        command = "phpcbf",     -- Make sure this is in your PATH
+                        args = {
+                            "--standard=PSR12", -- Specify the coding standard (PSR12 is commonly used)
+                            "-"                 -- Read from stdin (this allows null-ls to format the buffer)
+                        },
+                    }))
+                end
             },
         })
 
@@ -147,11 +207,32 @@ return {
                 { name = 'path' },
             }, {
                 { name = 'buffer' },
-            })
+            }),
+            formatting = {
+                fields = { 'menu', 'abbr', 'kind' },
+                format = function(entry, item)
+                    local menu_icon = {
+                        nvim_lsp = 'λ',
+                        luasnip = '⋗',
+                        buffer = 'Ω',
+                        path = '🖫',
+                    }
+                    item.menu = menu_icon[entry.source.name]
+                    return item
+                end,
+            },
         })
 
         vim.diagnostic.config({
-            -- update_in_insert = true,
+            update_in_insert = true,
+            signs = {
+                text = {
+                    [vim.diagnostic.severity.ERROR] = "󰅚",
+                    [vim.diagnostic.severity.WARN] = "󰀪",
+                    [vim.diagnostic.severity.HINT] = "󰌶",
+                    [vim.diagnostic.severity.INFO] = "",
+                }
+            },
             float = {
                 focusable = false,
                 style = "minimal",
@@ -159,6 +240,15 @@ return {
                 source = "always",
                 header = "",
                 prefix = "",
+                format = function(diagnostic)
+                    if diagnostic.source == 'rustc'
+                        and diagnostic.user_data.lsp.data ~= nil
+                    then
+                        return diagnostic.user_data.lsp.data.rendered
+                    else
+                        return diagnostic.message
+                    end
+                end,
             },
         })
     end
