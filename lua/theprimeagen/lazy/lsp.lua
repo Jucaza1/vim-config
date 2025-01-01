@@ -48,9 +48,14 @@ return {
             },
             handlers = {
                 function(server_name) -- default handler (optional)
-                    require("lspconfig")[server_name].setup {
-                        capabilities = capabilities
-                    }
+                    if server_name ~= "jdtls" then
+                        require("lspconfig")[server_name].setup {
+                            capabilities = capabilities
+                        }
+                    end
+                    -- require("lspconfig")[server_name].setup {
+                    --     capabilities = capabilities
+                    -- }
                 end,
                 ["rust_analyzer"] = function()
                     local lspconfig = require("lspconfig")
@@ -117,6 +122,17 @@ return {
                         capabilities = capabilities,
                     }
                 end,
+                ["astro"] = function()
+                    local lspconfig = require("lspconfig")
+                    lspconfig.astro.setup({
+                        settings = {
+                            astro = {
+                                formatter = "prettier",
+                                prettierPath = vim.fn.stdpath("data") .. "/mason/bin/prettier", -- Path to Mason's Prettier
+                            },
+                        },
+                    })
+                end
                 -- ["htmx"] = function()
                 --     local lspconfig = require("lspconfig")
                 --     lspconfig.htmx.setup {
@@ -144,23 +160,27 @@ return {
                 end,
                 prettier = function(source_name, methods)
                     -- null_ls.register(null_ls.builtins.formatting.prettier)
-                    null_ls.builtins.formatting.prettier.with({ extra_args = { "--no-semi" } })
-                    -- null_ls.builtins.formatting.prettier.with({
-                    --     filetypes = {
-                    --         "javascript",
-                    --         "typescript",
-                    --         "css",
-                    --         "scss",
-                    --         "html",
-                    --         "json",
-                    --         "yaml",
-                    --         "markdown",
-                    --         "graphql",
-                    --         "md",
-                    --         "txt",
-                    --     },
-                    --     only_local = "node_modules/.bin",
-                    -- })
+                    -- null_ls.builtins.formatting.prettier.with({ extra_args = { "--no-semi" } })
+                    null_ls.builtins.formatting.prettier.with({
+                        extra_args = { "--no-semi" },
+                        filetypes = {
+                            "javascript",
+                            "typescript",
+                            "css",
+                            "scss",
+                            "html",
+                            -- "json",
+                            -- "yaml",
+                            "markdown",
+                            -- "graphql",
+                            "md",
+                            "txt",
+                            "astro",
+                        },
+                        -- only_local = "node_modules/.bin",
+                        only_local = vim.fn.stdpath('data') .. '/mason/bin/prettier', -- Use Mason's Prettier
+                        command = vim.fn.stdpath('data') .. '/mason/bin/prettier',    -- Use Mason's Prettier
+                    })
                 end,
                 black = function(source_name, methods)
                     null_ls.register(null_ls.builtins.formatting.black)
@@ -180,7 +200,7 @@ return {
                             "-"                 -- Read from stdin (this allows null-ls to format the buffer)
                         },
                     }))
-                end
+                end,
             },
         })
 
@@ -195,7 +215,7 @@ return {
             mapping = cmp.mapping.preset.insert({
                 ['<C-p>'] = cmp.mapping.select_prev_item(cmp_select),
                 ['<C-n>'] = cmp.mapping.select_next_item(cmp_select),
-                ['<Tab>'] = cmp.mapping.select_next_item(cmp_select),
+                -- ['<Tab>'] = cmp.mapping.select_next_item(cmp_select),
                 ['<C-y>'] = cmp.mapping.confirm({ select = true }),
                 -- ['<CR>'] = cmp.mapping.confirm({ select = true }),
                 ['<C-e>'] = cmp.mapping.abort(),
@@ -250,6 +270,27 @@ return {
                     end
                 end,
             },
+            loclist = {
+                open = false,
+            },
+            qflist ={
+                open = false,
+            }
         })
+        -- vim.diagnostic.setloclist({
+        --     open = false, -- Don't automatically open the location list
+        -- })
+        -- vim.diagnostic.setqflist({
+        --     open = false, -- Don't automatically open the location list
+        -- })
+        -- vim.diagnostic.handlers.loclist = {
+        --     show = function(_, _, _, opts)
+        --         -- Generally don't want it to open on every update
+        --         opts.loclist.open = false
+        --         local winid = vim.api.nvim_get_current_win()
+        --         vim.diagnostic.setloclist(opts.loclist)
+        --         vim.api.nvim_set_current_win(winid)
+        --     end
+        -- }
     end
 }
