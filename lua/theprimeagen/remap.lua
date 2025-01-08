@@ -12,8 +12,10 @@ vim.keymap.set("n", "<leader>Q", '<CMD>:qa<CR>')
 -- vim.keymap.set("n", "gx", ":!open <c-r><c-a><CR>")
 -- vim.keymap.set("v", "gx", "<CMD>!open '<,'><CR>")
 -- Increment/decrement
-vim.keymap.set("n", "<C-s>", "<C-a>", { desc = "Increment numbers", noremap = true })
+vim.keymap.set({"n","x"}, "<C-s>", "<C-a>", { desc = "Increment numbers", noremap = true })
 -- vim.keymap.set("n", "-", "<C-x>", { desc = "Decrement numbers", noremap = true })
+vim.keymap.set("x", "g<C-s>", "g<C-a>", { desc = "Increment numbers per column", noremap = true })
+
 vim.keymap.set("n", "sv", ":split<Return>", opts)
 vim.keymap.set("n", "ss", ":vsplit<Return>", opts)
 
@@ -63,8 +65,8 @@ vim.keymap.set("n", "<leader>qc", ":cclose<CR>") -- close quickfix list
 vim.keymap.set("n", "<C-y>", "<cmd>cnext<CR>zz")
 vim.keymap.set("n", "<C-t>", "<cmd>cprev<CR>zz")
 
-vim.keymap.set("n", "<leader>k", "<cmd>lnext<CR>zz")
-vim.keymap.set("n", "<leader>j", "<cmd>lprev<CR>zz")
+-- vim.keymap.set("n", "<leader>k", "<cmd>lnext<CR>zz")
+-- vim.keymap.set("n", "<leader>j", "<cmd>lprev<CR>zz")
 
 vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
 -- vim.keymap.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true })

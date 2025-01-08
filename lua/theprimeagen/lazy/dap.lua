@@ -50,7 +50,7 @@ return {
                 --   end
                 --
                 --   return " " .. variable.value
-                kkk -- end,
+                -- end,
             })
             require("dap-vscode-js").setup({
                 -- Path of node executable. Defaults to $NODE_PATH, and then "node"
@@ -221,7 +221,7 @@ return {
                 port = 2088,
                 executable = {
                     command = "codelldb",
-                    args = { "--port", "2088"}, -- Make sure to match the port if needed
+                    args = { "--port", "2088" }, -- Make sure to match the port if needed
                 },
             }
 
@@ -269,6 +269,42 @@ return {
             --         end,
             --     },
             -- }
+
+            local function find_main_class()
+                local main_class = vim.fn.expand('%:p') -- Get current file path
+                local is_file = vim.fn.filereadable(current_file) == 1
+                if not is_file then
+                    return nil
+                end
+
+                -- Check if the current file has the main method
+                local has_main = false
+                for line in io.lines(main_class) do
+                    if line:find('public static void main') then
+                        has_main = true
+                        break
+                    end
+                end
+
+                if has_main then
+                    -- If the current file has a main method, return it as the main class
+                    return main_class
+                else
+                    -- Optionally, search your workspace (e.g., via 'find' command) for Java classes with main
+                    -- You could integrate a more complex solution here for workspace-wide search
+                    return nil
+                end
+            end
+            local main_class = find_main_class()
+            dap.configurations['java'] = {
+                {
+                    type = 'java',
+                    request = 'launch',
+                    name = 'Launch Java Program',
+                    mainClass = main_class, -- Path to the main class or use `${workspaceFolder}`
+                    projectName = '',       -- Optional: specify the project name if using a multi-project workspace
+                },
+            }
             vim.keymap.set("n", "<space>b", dap.toggle_breakpoint)
             vim.keymap.set("n", "<space>gb", dap.run_to_cursor)
 
