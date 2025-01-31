@@ -7,6 +7,7 @@ return {
             "nvim-treesitter/nvim-treesitter",
             "marilari88/neotest-vitest",
             "nvim-neotest/neotest-plenary",
+            "haydenmeade/neotest-jest"
         },
         config = function()
             local neotest = require("neotest")
@@ -18,6 +19,14 @@ return {
                         -- in all my projects
                         min_init = "./scripts/tests/minimal.vim",
                     }),
+                    require('neotest-jest')({
+                        jestCommand = "npm test --",
+                        jestConfigFile = "jest.config.ts", -- or jest.config.js
+                        env = { CI = true },
+                        cwd = function(path)
+                            return vim.fn.getcwd()
+                        end,
+                    })
                 }
             })
 
@@ -27,4 +36,3 @@ return {
         end,
     },
 }
-
