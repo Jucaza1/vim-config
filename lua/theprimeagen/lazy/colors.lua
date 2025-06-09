@@ -3,17 +3,17 @@ function ColorMyPencils(color)
     color = color or "rose-pine-moon"
     -- color = color or "catppuccin"
     vim.cmd.colorscheme(color)
-if color~= 'catppuccin' then
-        vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
-        vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
+    if color ~= 'catppuccin' then
+        -- vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
+        -- vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
         vim.api.nvim_set_hl(0, "Visual", { bg = "#851491" })
-        vim.api.nvim_set_hl(0, "WinSeparator", { fg = "#AAAAAA", bg = "none" })
-        vim.api.nvim_set_hl(0, "hl-WinSeparator", { fg = "#AAAAAA", bg = "none" })
-
-end
+        -- vim.api.nvim_set_hl(0, "WinSeparator", { fg = "#AAAAAA", bg = "none" })
+        -- vim.api.nvim_set_hl(0, "hl-WinSeparator", { fg = "#AAAAAA", bg = "none" })
+    end
     -- vim.api.nvim_set_hl(0, "StatusLineNC", { bg = '#592135', })
     -- vim.api.nvim_set_hl(0, "Pmenu", { bg = '#52054e', })
 end
+
 function Ruler()
     -- Get the current state of 'cursorcolumn'
     local current_value = vim.wo.cursorcolumn
@@ -27,14 +27,15 @@ function Ruler()
         print("Cursor column highlight enabled")
     end
 end
+
 function ToggleWrap()
-  if vim.wo.wrap then
-    vim.wo.wrap = false
-    print("Wrap disabled")
-  else
-    vim.wo.wrap = true
-    print("Wrap enabled")
-  end
+    if vim.wo.wrap then
+        vim.wo.wrap = false
+        print("Wrap disabled")
+    else
+        vim.wo.wrap = true
+        print("Wrap enabled")
+    end
 end
 
 return {
@@ -67,17 +68,17 @@ return {
                     operators = false,
                     folds = false,
                 },
-                strikethrough = true,
-                invert_selection = false,
-                invert_signs = false,
-                invert_tabline = false,
-                invert_intend_guides = false,
-                inverse = true, -- invert background for search, diffs, statuslines and errors
-                contrast = "",  -- can be "hard", "soft" or empty string
-                palette_overrides = {},
-                overrides = {},
+                -- strikethrough = true,
+                -- invert_selection = false,
+                -- invert_signs = false,
+                -- invert_tabline = false,
+                -- invert_intend_guides = false,
+                -- inverse = true, -- invert background for search, diffs, statuslines and errors
+                -- contrast = "",  -- can be "hard", "soft" or empty string
+                -- palette_overrides = {},
+                -- overrides = {},
                 dim_inactive = false,
-                transparent_mode = false,
+                transparent_mode = true,
             })
         end,
     },
@@ -114,18 +115,18 @@ return {
                 disable_background = true,
                 extend_background_behind_borders = true,
 
-                enable = {
-                    terminal = true,
-                    legacy_highlights = true, -- Improve compatibility for previous versions of Neovim
-                    migrations = true,        -- Handle deprecated options automatically
-                },
-
+                -- enable = {
+                --     terminal = true,
+                --     -- legacy_highlights = true, -- Improve compatibility for previous versions of Neovim
+                --     migrations = true,        -- Handle deprecated options automatically
+                -- },
+                --
                 styles = {
                     bold = true,
                     italic = false,
-                    -- transparency = true,
+                    transparency = true,
                 },
-
+                --
                 groups = {
                     border = "muted",
                     link = "iris",
@@ -168,6 +169,11 @@ return {
                 highlight_groups = {
                     -- Comment = { fg = "foam" },
                     -- VertSplit = { fg = "muted", bg = "muted" },
+                    ["@lsp.type.keyword"] = { fg = "pine" },   -- pink (or your preferred color)
+                    ["@lsp.type.class"] = { fg = "foam" },     -- cyan
+                    ["@lsp.type.interface"] = { fg = "foam" }, -- lavender
+                    ["@lsp.type.modifier"] = { fg = "pine" },  -- gold
+                    ["@lsp.type.property"] = { fg = "love" },  -- gold
                 },
 
                 before_highlight = function(group, highlight, palette)
@@ -186,56 +192,55 @@ return {
     },
     {
         'catppuccin/nvim',
-        config = function ()
+        config = function()
             require("catppuccin").setup({
-    flavour = "auto", -- latte, frappe, macchiato, mocha
-    background = { -- :h background
-        light = "latte",
-        dark = "mocha",
-    },
-    transparent_background = true, -- disables setting the background color.
-    show_end_of_buffer = false, -- shows the '~' characters after the end of buffers
-    term_colors = false, -- sets terminal colors (e.g. `g:terminal_color_0`)
-    dim_inactive = {
-        enabled = false, -- dims the background color of inactive window
-        shade = "dark",
-        percentage = 0.15, -- percentage of the shade to apply to the inactive window
-    },
-    no_italic = false, -- Force no italic
-    no_bold = false, -- Force no bold
-    no_underline = false, -- Force no underline
-    styles = { -- Handles the styles of general hi groups (see `:h highlight-args`):
-        comments = { "italic" }, -- Change the style of comments
-        conditionals = { "italic" },
-        loops = {},
-        functions = {},
-        keywords = {},
-        strings = {},
-        variables = {},
-        numbers = {},
-        booleans = {},
-        properties = {},
-        types = {},
-        operators = {},
-        -- miscs = {}, -- Uncomment to turn off hard-coded styles
-    },
-    color_overrides = {},
-    custom_highlights = {},
-    default_integrations = true,
-    integrations = {
-        cmp = true,
-        gitsigns = true,
-        nvimtree = true,
-        treesitter = true,
-        notify = false,
-        mini = {
-            enabled = true,
-            indentscope_color = "",
-        },
-        -- For more plugins integrations please scroll down (https://github.com/catppuccin/nvim#integrations)
-    },
-})
-
+                flavour = "mocha", -- latte, frappe, macchiato, mocha, auto
+                background = {     -- :h background
+                    light = "latte",
+                    dark = "mocha",
+                },
+                transparent_background = true, -- disables setting the background color.
+                show_end_of_buffer = false,    -- shows the '~' characters after the end of buffers
+                term_colors = false,           -- sets terminal colors (e.g. `g:terminal_color_0`)
+                dim_inactive = {
+                    enabled = false,           -- dims the background color of inactive window
+                    shade = "dark",
+                    percentage = 0.15,         -- percentage of the shade to apply to the inactive window
+                },
+                no_italic = false,             -- Force no italic
+                no_bold = false,               -- Force no bold
+                no_underline = false,          -- Force no underline
+                styles = {                     -- Handles the styles of general hi groups (see `:h highlight-args`):
+                    comments = { "italic" },   -- Change the style of comments
+                    conditionals = { "italic" },
+                    loops = {},
+                    functions = {},
+                    keywords = {},
+                    strings = {},
+                    variables = {},
+                    numbers = {},
+                    booleans = {},
+                    properties = {},
+                    types = {},
+                    operators = {},
+                    -- miscs = {}, -- Uncomment to turn off hard-coded styles
+                },
+                color_overrides = {},
+                custom_highlights = {},
+                default_integrations = true,
+                integrations = {
+                    cmp = true,
+                    gitsigns = true,
+                    nvimtree = true,
+                    treesitter = true,
+                    notify = false,
+                    mini = {
+                        enabled = true,
+                        indentscope_color = "",
+                    },
+                    -- For more plugins integrations please scroll down (https://github.com/catppuccin/nvim#integrations)
+                },
+            })
         end
     }
 
