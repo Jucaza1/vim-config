@@ -40,7 +40,7 @@ autocmd('TextYankPost', {
     end,
 })
 
-autocmd({"BufWritePre"}, {
+autocmd({ "BufWritePre" }, {
     group = ThePrimeagenGroup,
     pattern = "*",
     command = [[%s/\s\+$//e]],
@@ -58,8 +58,8 @@ autocmd('LspAttach', {
         vim.keymap.set("n", "<leader>vrr", function() vim.lsp.buf.references() end, opts)
         vim.keymap.set("n", "<leader>vrn", function() vim.lsp.buf.rename() end, opts)
         vim.keymap.set("i", "<C-h>", function() vim.lsp.buf.signature_help() end, opts)
-        vim.keymap.set("n", "[d", function() vim.diagnostic.goto_next() end, opts)
-        vim.keymap.set("n", "]d", function() vim.diagnostic.goto_prev() end, opts)
+        vim.keymap.set("n", "]d", function() vim.diagnostic.goto_next() end, opts)
+        vim.keymap.set("n", "[d", function() vim.diagnostic.goto_prev() end, opts)
     end
 })
 
@@ -67,7 +67,7 @@ vim.g.netrw_browse_split = 0
 vim.g.netrw_banner = 0
 vim.g.netrw_winsize = 25
 
-vim.opt.guicursor = {'i:ver25-blinkwait175-blinkoff150-blinkon175'}
+vim.opt.guicursor = { 'i:ver25-blinkwait175-blinkoff150-blinkon175' }
 vim.opt.cursorline = true
 
 -- Case insensitive searching UNLESS /C or capital in search
@@ -106,4 +106,23 @@ vim.opt.splitkeep = "cursor"
 --vim.cmd()
 -- vim.opt.clipboard = 'unnamedplus'
 -- vim.o.fillchars = "vert:|,horiz:━"
+
+-- Copilot
+-- Disable Copilot on startup
+vim.g.copilot_enabled = false
+-- vim.g.copilot_no_tab_map = true
+-- vim.api.nvim_set_keymap('i', '<M-CR>', 'copilot#Accept("<CR>")', { expr = true, noremap = true, silent = true })
+-- vim.keymap.set("i", "<C-CR>", function()
+--     return vim.fn["copilot#Accept"]("<Tab>")
+-- end, {
+--     expr = true,
+--     silent = true,
+--     noremap = true
+-- })
+
+-- Keymaps to control it
+vim.keymap.set("n", "<leader>ce", ":Copilot enable<CR>", { silent = true })
+vim.keymap.set("n", "<leader>cd", ":Copilot disable<CR>", { silent = true })
+--
+
 ColorMyPencils()
