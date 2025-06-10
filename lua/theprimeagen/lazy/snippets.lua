@@ -11,6 +11,7 @@ return {
         config = function()
             local ls = require("luasnip")
             ls.filetype_extend("javascript", { "jsdoc" })
+            ls.filetype_extend("typescriptreact", { "tailwind" })
             ls.filetype_extend("php", { "html" })
 
             --- TODO: What is expand?
@@ -25,7 +26,7 @@ return {
                 end
             end, { silent = true })
             require("luasnip.loaders.from_vscode").lazy_load( {
-                exlude = { "javascript" }, })
+                exclude = { "javascript" }, })
         end,
     }
 }
