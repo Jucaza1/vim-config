@@ -39,7 +39,19 @@ return {
                 },
                 lualine_b = { { 'FugitiveHead', icon = '' }, { "fancy_diff" }, },
                 lualine_x = { { "fancy_diagnostics" },
-                    'fancy_lsp_servers',
+                    -- 'fancy_lsp_servers',
+                    {
+                        function()
+                            local clients = vim.lsp.get_active_clients({ bufnr = 0 })
+                            local names = {}
+                            for _, client in ipairs(clients) do
+                                if client.name ~= "GitHub Copilot" then
+                                    table.insert(names, client.name)
+                                end
+                            end
+                            return #names > 0 and "  " .. table.concat(names, ", ") or ""
+                        end,
+                    },
                     'encoding',
                     -- 'fileformat',
                     'filetype'
