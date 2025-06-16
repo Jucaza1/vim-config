@@ -29,12 +29,16 @@ return {
         require("fidget").setup({})
         require("mason").setup()
         require("mason-nvim-dap").setup({
-            ensure_installed = {
-                "codelldb"
-            }
+            enable = true,
+            automatic_enable = {
+                "codelldb",
+                exclude = {},
+            },
         })
         require("mason-lspconfig").setup({
-            ensure_installed = {
+            enable = true,
+            automatic_enable = {
+                -- ensure_installed = {
                 "lua_ls",
                 "rust_analyzer",
                 "gopls",
@@ -45,6 +49,9 @@ return {
                 "ts_ls",
                 "zls",
                 "jdtls",
+                "tailwindcss",
+                "elixirls",
+                "taplo"
             },
             handlers = {
                 function(server_name) -- default handler (optional)
@@ -118,7 +125,14 @@ return {
                 ["html"] = function()
                     local lspconfig = require("lspconfig")
                     lspconfig.html.setup {
-                        filetypes = { "html", "php" },
+                        filetypes = { "html", "php", "tsx" },
+                        capabilities = capabilities,
+                    }
+                end,
+                ["tailwindcss"] = function()
+                    local lspconfig = require("lspconfig")
+                    lspconfig.tailwindcss.setup {
+                        filetypes = { 'html', 'css', 'javascript', 'typescript', 'javascriptreact', 'typescriptreact', "astro" },
                         capabilities = capabilities,
                     }
                 end,
@@ -132,13 +146,37 @@ return {
                             },
                         },
                     })
-                end
+                end,
+                taplo = function()
+                    print("✔ Taplo setup invoked")
+                    local lspconfig = require("lspconfig")
+                    lspconfig.taplo.setup({
+                        filetypes = { 'toml' },
+                        root_dir = require('lspconfig/util').root_pattern('Cargo.toml', '.git'),
+                        capabilities = capabilities,
+                    })
+                end,
                 -- ["htmx"] = function()
                 --     local lspconfig = require("lspconfig")
                 --     lspconfig.htmx.setup {
                 --         capabilities = capabilities,
                 --     }
                 -- end,
+                elixirls = function()
+                    local lspconfig = require("lspconfig")
+                    lspconfig.elixirls.setup {
+                        capabilities = capabilities,
+                        cmd = { "elixir-ls" },
+                        -- settings = {
+                        --     elixirLS = {
+                        --         dialyzerEnabled = false,
+                        --         fetchDeps = true,
+                        --         enableTestLenses = true,
+                        --         suggestSpecs = true,
+                        --     }
+                        -- }
+                    }
+                end,
             }
         })
         require("mason-null-ls").setup({
@@ -150,7 +188,8 @@ return {
                 'gopls',
                 'goimports',
                 'phpcsfixer',
-                'phpcbf'
+                'phpcbf',
+                'ktlint',
             },
             handlers = {
                 function() end, -- disables automatic setup of all null-ls sources
@@ -201,6 +240,15 @@ return {
                         },
                     }))
                 end,
+                ktlint = function(source_name, methods)
+                    null_ls.register(null_ls.builtins.formatting.ktlint.with({
+                        command = "ktlint",
+                        extra_args = { "--stdin", "--format" },
+                    }))
+                end,
+                checkmake = function(source_name, methods)
+                    null_ls.register(null_ls.builtins.diagnostics.checkmake)
+                end
             },
         })
 
@@ -225,6 +273,7 @@ return {
                 { name = 'nvim_lsp' },
                 { name = 'luasnip' }, -- For luasnip users.
                 { name = 'path' },
+                { name = "crates" },
             }, {
                 { name = 'buffer' },
             }),
@@ -236,6 +285,7 @@ return {
                         luasnip = '⋗',
                         buffer = 'Ω',
                         path = '🖫',
+                        crates = ''
                     }
                     item.menu = menu_icon[entry.source.name]
                     return item
@@ -273,7 +323,7 @@ return {
             loclist = {
                 open = false,
             },
-            qflist ={
+            qflist = {
                 open = false,
             }
         })
