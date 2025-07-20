@@ -42,16 +42,22 @@ return {
                 "lua_ls",
                 "rust_analyzer",
                 "gopls",
-                -- "ruff_lsp",
+                "ruff",
                 "jsonls",
                 "pyright",
+                -- "pylsp",
                 "eslint",
                 "ts_ls",
                 "zls",
                 "jdtls",
                 "tailwindcss",
                 "elixirls",
-                "taplo"
+                "taplo",
+                "cssls",
+                "clangd",
+                "cmake",
+                "lemminx",
+                "yamlls",
             },
             handlers = {
                 function(server_name) -- default handler (optional)
@@ -177,19 +183,83 @@ return {
                         -- }
                     }
                 end,
+                pylsp = function()
+                    local lspconfig = require("lspconfig")
+                    lspconfig.pylsp.setup {
+                        on_attach = function(client, bufnr)
+                            -- Disable formatting for Pylsp
+                            client.server_capabilities.documentFormattingProvider = false
+                            client.server_capabilities.documentRangeFormattingProvider = false
+                        end,
+                        capabilities = capabilities,
+                        settings = {
+                            pylsp = {
+                                plugins = {
+                                    rope_autoimport = { enabled = true }, -- Disable rope
+                                    pycodestyle = { enabled = false }, -- Disable pycodestyle
+                                    flake8 = { enabled = false }, -- Disable flake8
+                                    pylint = { enabled = false }, -- Disable pylint
+                                    mccabe = { enabled = false }, -- Disable mccabe
+                                    pyflakes = { enabled = true }, -- Disable pyflakes
+                                    yapf = { enabled = false }, -- Disable yapf
+                                    black = { enabled = true, line_length = 88 }, -- Enable black with line length 88
+                                },
+                            },
+                        },
+                    }
+                end,
+                pyright = function()
+                    local lspconfig = require("lspconfig")
+                    lspconfig.pyright.setup {
+                        on_attach = function(client, bufnr)
+                            -- Disable formatting for Pyright
+                            client.server_capabilities.documentFormattingProvider = false
+                            client.server_capabilities.documentRangeFormattingProvider = false
+                        end,
+                        capabilities = capabilities,
+                        settings = {
+                            python = {
+                                analysis = {
+                                    useLibraryCodeForTypes = true,
+                                    diagnosticSeverityOverrides = {
+                                        reportUnusedVariable = "warning",
+                                    },
+                                    typeCheckingMode = "off", -- Set type-checking mode to off
+                                    diagnosticMode = "off", -- Disable diagnostics entirely
+                                },
+                            },
+                        },
+                    }
+                end,
+                ruff = function()
+                    local lspconfig = require("lspconfig")
+                    lspconfig.ruff_lsp.setup {
+                        on_attach = function(client, bufnr)
+                            -- Disable formatting for Ruff
+                            client.server_capabilities.hoverProvider = false
+                        end,
+                        capabilities = capabilities,
+                        settings = {
+                            ruff = {
+                                -- args = { "--line-length", "88" }, -- Example argument, adjust as needed
+                            },
+                        },
+                    }
+                end,
             }
         })
         require("mason-null-ls").setup({
             ensure_installed = {
                 -- 'stylua',
                 -- 'jq',
-                'black',
+                -- 'black',
                 'prettier',
                 'gopls',
                 'goimports',
                 'phpcsfixer',
                 'phpcbf',
                 'ktlint',
+                'clang-format',
             },
             handlers = {
                 function() end, -- disables automatic setup of all null-ls sources
@@ -221,11 +291,11 @@ return {
                         command = vim.fn.stdpath('data') .. '/mason/bin/prettier',    -- Use Mason's Prettier
                     })
                 end,
-                black = function(source_name, methods)
-                    null_ls.register(null_ls.builtins.formatting.black)
-                    -- null_ls.register(null_ls.builtins.formatting.black.with({ extra_args = { "--skip-string-normalization", } }))
-                    --https://black.readthedocs.io/en/stable/usage_and_configuration/the_basics.html
-                end,
+                -- black = function(source_name, methods)
+                --     null_ls.register(null_ls.builtins.formatting.black)
+                --     -- null_ls.register(null_ls.builtins.formatting.black.with({ extra_args = { "--skip-string-normalization", } }))
+                --     --https://black.readthedocs.io/en/stable/usage_and_configuration/the_basics.html
+                -- end,
                 shfmt = function(source_name, methods)
                     -- custom logic
                     require('mason-null-ls').default_setup(source_name, methods) -- to maintain default behavior
@@ -248,7 +318,13 @@ return {
                 end,
                 checkmake = function(source_name, methods)
                     null_ls.register(null_ls.builtins.diagnostics.checkmake)
-                end
+                end,
+                ["clang-format"] = function(source_name, methods)
+                    null_ls.register(null_ls.builtins.formatting.clang_format.with({
+                        command = "clang-format",
+                        -- extra_args = { "--style=file" }, -- Use the .clang-format file in the project root
+                    }))
+                end,
             },
         })
 

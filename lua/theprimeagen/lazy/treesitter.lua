@@ -12,6 +12,7 @@ return {
                 "kotlin",
                 "html", "css", "json", "yaml", "toml", "tsx",
                 "heex", "eex", "elixir",
+                "markdown", "markdown_inline",
             },
 
             -- Install parsers synchronously (only applied to `ensure_installed`)

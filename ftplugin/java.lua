@@ -11,10 +11,10 @@ end
 
 -- See `:help vim.lsp.start_client` for an overview of the supported `config` options.
 local jdtls_path = vim.fn.stdpath('data') .. "/mason/packages/jdtls/"
-local path_to_lsp_server = jdtls_path .. "/config_linux"
+local path_to_lsp_server = jdtls_path .. "config_linux"
 local path_to_plugins = jdtls_path .. "plugins/"
--- local path_to_jar = path_to_plugins .. "org.eclipse.equinox.launcher.gtk.linux.aarch64_1.2.1100.v20240722-2106.jar"
-local path_to_jar = path_to_plugins .. "org.eclipse.equinox.launcher_1.6.900.v20240613-2009.jar"
+-- local path_to_jar = path_to_plugins .. "org.eclipse.equinox.launcher_1.6.900.v20240613-2009.jar"
+local path_to_jar = path_to_plugins .. "org.eclipse.equinox.launcher_1.7.0.v20250331-1702.jar"
 local lombok_path = jdtls_path .. "lombok.jar"
 -- local lombok_path = vim.fn.expand("~/.config/nvim/java_jars/") .. "lombok.jar"
 
@@ -48,7 +48,7 @@ local config = {
     -- The command that starts the language server
     -- See: https://github.com/eclipse/eclipse.jdt.ls#running-from-the-command-line
     cmd = {
-        vim.fn.expand("~/.asdf/shims/java"),
+        vim.fn.expand("~/.asdf/installs/java/openjdk-21/bin/java"),
         '-Declipse.application=org.eclipse.jdt.ls.core.id1',
         '-Dosgi.bundles.defaultStartLevel=4',
         '-Declipse.product=org.eclipse.jdt.ls.core.product',
@@ -108,7 +108,12 @@ local config = {
                     {
                         name = "JavaSE-18",
                         path = home .. "adoptopenjdk-18.0.2+101/",
-                    }
+                    },
+                    {
+                        name = "JavaSE-21",
+                        path = home .. "openjdk-21/",
+                        default = true,
+                    },
                 }
             },
             maven = {
@@ -191,7 +196,7 @@ config['on_attach'] = function(client, bufnr)
         }
     }, bufnr)
     jdtls.setup_dap({ hotcodereplace = "auto" })
-  require("jdtls.dap").setup_dap_main_class_configs()
+    require("jdtls.dap").setup_dap_main_class_configs()
     -- require('jdtls.dap').setup_dap()
     --
     --     -- Find the main method(s) of the application so the debug adapter can successfully start up the application
